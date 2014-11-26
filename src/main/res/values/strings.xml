@@ -15,7 +15,7 @@
   -->
 
 <resources>
-    <string name="app_name">500px (Example Muzei Source)</string>
-    <string name="source_name">500px (Example)</string>
-    <string name="source_description">Popular photos from 500px</string>
+    <string name="app_name">Open Cultuur Data (Example Muzei Source)</string>
+    <string name="source_name">Open Cultuur Data (Example)</string>
+    <string name="source_description">Popular photos from Open Cultuur Data</string>
 </resources>
