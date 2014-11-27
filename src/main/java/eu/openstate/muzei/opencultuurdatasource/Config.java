@@ -17,5 +17,5 @@
 package eu.openstate.muzei.opencultuurdatasource;
 
 public interface Config {
-    public static final String OCD_API_BASE = "http://api.opencultuurdata.nl/v0";
+    public static final String OCD_API_BASE = "http://api.opencultuurdata.nl";
 }

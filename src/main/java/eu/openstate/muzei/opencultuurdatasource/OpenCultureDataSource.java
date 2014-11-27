@@ -31,16 +31,16 @@ import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 
-import static com.example.muzei.examplesource500px.FiveHundredPxService.Photo;
-import static com.example.muzei.examplesource500px.FiveHundredPxService.PhotosResponse;
+import static eu.openstate.muzei.opencultuurdatasource.OpenCultureDataService.Item;
+import static eu.openstate.muzei.opencultuurdatasource.OpenCultureDataService.HitsResponse;
 
-public class FiveHundredPxExampleArtSource extends RemoteMuzeiArtSource {
-    private static final String TAG = "500pxExample";
-    private static final String SOURCE_NAME = "FiveHundredPxExampleArtSource";
+public class OpenCultureDataSource extends RemoteMuzeiArtSource {
+    private static final String TAG = "OpenCultureData";
+    private static final String SOURCE_NAME = "OpenCultureDataSource";
 
     private static final int ROTATE_TIME_MILLIS = 3 * 60 * 60 * 1000; // rotate every 3 hours
 
-    public FiveHundredPxExampleArtSource() {
+    public OpenCultureDataSource() {
         super(SOURCE_NAME);
     }
 
@@ -55,13 +55,13 @@ public class FiveHundredPxExampleArtSource extends RemoteMuzeiArtSource {
         String currentToken = (getCurrentArtwork() != null) ? getCurrentArtwork().getToken() : null;
 
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("https://api.500px.com")
-                .setRequestInterceptor(new RequestInterceptor() {
-                    @Override
-                    public void intercept(RequestFacade request) {
-                        request.addQueryParam("consumer_key", Config.CONSUMER_KEY);
-                    }
-                })
+                .setEndpoint(Config.OCD_API_BASE)
+                // .setRequestInterceptor(new RequestInterceptor() {
+                //     @Override
+                //     public void intercept(RequestFacade request) {
+                //         request.addQueryParam("consumer_key", Config.CONSUMER_KEY);
+                //     }
+                // })
                 .setErrorHandler(new ErrorHandler() {
                     @Override
                     public Throwable handleError(RetrofitError retrofitError) {
@@ -76,8 +76,10 @@ public class FiveHundredPxExampleArtSource extends RemoteMuzeiArtSource {
                 })
                 .build();
 
-        FiveHundredPxService service = restAdapter.create(FiveHundredPxService.class);
-        PhotosResponse response = service.getPopularPhotos();
+        OpenCultureDataService service = restAdapter.create(OpenCultureDataService.class);
+        HitsResponse response = service.searchAllCollections(
+            new OpenCultureDataSearchRequest("en", 10)
+        );
 
         if (response == null || response.photos == null) {
             throw new RetryException();
@@ -90,23 +92,23 @@ public class FiveHundredPxExampleArtSource extends RemoteMuzeiArtSource {
         }
 
         Random random = new Random();
-        Photo photo;
+        Item photo;
         String token;
         while (true) {
-            photo = response.photos.get(random.nextInt(response.photos.size()));
-            token = Integer.toString(photo.id);
-            if (response.photos.size() <= 1 || !TextUtils.equals(token, currentToken)) {
+            photo = response.hits.hits.get(random.nextInt(response.hits.hits.size()));
+            token = photo._id;
+            if (response.hits.hits.size() <= 1 || !TextUtils.equals(token, currentToken)) {
                 break;
             }
         }
 
         publishArtwork(new Artwork.Builder()
-                .title(photo.name)
-                .byline(photo.user.fullname)
-                .imageUri(Uri.parse(photo.image_url))
+                .title(photo.title)
+                .byline(photo.authors.get(0))
+                .imageUri(Uri.parse(photo.media_urls.get(0)))
                 .token(token)
                 .viewIntent(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://500px.com/photo/" + photo.id)))
+                        Uri.parse(photo.ocd_url)))
                 .build());
 
         scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
