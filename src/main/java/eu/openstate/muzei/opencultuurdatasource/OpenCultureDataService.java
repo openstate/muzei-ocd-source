@@ -19,18 +19,8 @@ package eu.openstate.muzei.opencultuurdatasource;
 import java.util.List;
 
 import retrofit.http.GET;
-
-public class OpenCultureDataSearchRequest {
-    final string query;
-    final string filters;
-    final string size;
-
-    OpenCultureDataSearchRequest(String query, String size) {
-        this.query = query;
-        this.size = size;
-        this.filters = "{\"media_content_type\": {\"terms\": [\"image/jpeg\"]}}";
-    }
-}
+import retrofit.http.POST;
+import retrofit.http.Body;
 
 interface OpenCultureDataService {
     @POST("/v0/search")

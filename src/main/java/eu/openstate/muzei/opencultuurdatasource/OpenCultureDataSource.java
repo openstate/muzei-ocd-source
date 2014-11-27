@@ -77,15 +77,16 @@ public class OpenCultureDataSource extends RemoteMuzeiArtSource {
                 .build();
 
         OpenCultureDataService service = restAdapter.create(OpenCultureDataService.class);
+        OpenCultureDataSearchRequest sr = new OpenCultureDataSearchRequest("en", "10");
         HitsResponse response = service.searchAllCollections(
-            new OpenCultureDataSearchRequest("en", 10)
+            sr
         );
 
-        if (response == null || response.photos == null) {
+        if (response == null || response.hits == null) {
             throw new RetryException();
         }
 
-        if (response.photos.size() == 0) {
+        if (response.hits.hits.size() == 0) {
             Log.w(TAG, "No photos returned from API.");
             scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
             return;
@@ -105,10 +106,10 @@ public class OpenCultureDataSource extends RemoteMuzeiArtSource {
         publishArtwork(new Artwork.Builder()
                 .title(photo.title)
                 .byline(photo.authors.get(0))
-                .imageUri(Uri.parse(photo.media_urls.get(0)))
+                .imageUri(Uri.parse(photo.media_urls.get(0).url))
                 .token(token)
                 .viewIntent(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(photo.ocd_url)))
+                        Uri.parse(photo.meta.ocd_url.toString())))
                 .build());
 
         scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
