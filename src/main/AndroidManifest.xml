@@ -29,7 +29,7 @@
         <service android:name=".OpenCultureDataSource"
             android:label="@string/source_name"
             android:description="@string/source_description"
-            android:icon="@drawable/ic_source">
+            android:icon="@drawable/ocd">
             <intent-filter>
                 <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource" />
             </intent-filter>

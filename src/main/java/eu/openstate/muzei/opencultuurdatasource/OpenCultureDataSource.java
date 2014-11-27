@@ -23,6 +23,7 @@ import android.util.Log;
 
 import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
+import com.google.android.apps.muzei.api.UserCommand;
 
 import java.util.Random;
 
@@ -47,7 +48,9 @@ public class OpenCultureDataSource extends RemoteMuzeiArtSource {
     @Override
     public void onCreate() {
         super.onCreate();
-        setUserCommands(BUILTIN_COMMAND_ID_NEXT_ARTWORK);
+        List<UserCommand> commands = new ArrayList<UserCommand>();
+        commands.add(new UserCommand(BUILTIN_COMMAND_ID_NEXT_ARTWORK));
+        setUserCommands(commands);
     }
 
     @Override
@@ -109,7 +112,7 @@ public class OpenCultureDataSource extends RemoteMuzeiArtSource {
                 .imageUri(Uri.parse(photo.media_urls.get(0).url))
                 .token(token)
                 .viewIntent(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(photo.meta.ocd_url.toString())))
+                        Uri.parse(photo.meta.ocd_url)))
                 .build());
 
         scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
