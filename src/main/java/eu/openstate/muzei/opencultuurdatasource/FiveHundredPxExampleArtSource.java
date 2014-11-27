@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.muzei.examplesource500px;
+package eu.openstate.muzei.opencultuurdatasource;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -112,4 +112,3 @@ public class FiveHundredPxExampleArtSource extends RemoteMuzeiArtSource {
         scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
     }
 }
-

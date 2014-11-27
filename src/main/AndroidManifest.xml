@@ -15,7 +15,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.muzei.examplesource500px">
+    package="eu.openstate.muzei.opencultuurdatasource">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

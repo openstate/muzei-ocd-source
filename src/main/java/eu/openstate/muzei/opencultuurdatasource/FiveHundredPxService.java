@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.muzei.examplesource500px;
+package eu.openstate.muzei.opencultuurdatasource;
 
 import java.util.List;
 

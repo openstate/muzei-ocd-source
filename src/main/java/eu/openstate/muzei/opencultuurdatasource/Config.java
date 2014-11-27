@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package com.example.muzei.examplesource500px;
+package eu.openstate.muzei.opencultuurdatasource;
 
 public interface Config {
-    public static final String CONSUMER_KEY = "HocY5wY9GQaa9sdNO9HvagCGuGt34snyMTHckIQJ";
+    public static final String OCD_API_BASE = "http://api.opencultuurdata.nl/v0";
 }
