@@ -109,7 +109,7 @@ public class OpenCultureDataSource extends RemoteMuzeiArtSource {
                 .imageUri(Uri.parse(photo.media_urls.get(0).url))
                 .token(token)
                 .viewIntent(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(photo.meta.ocd_url.toString())))
+                        Uri.parse(photo.meta.ocd_url))
                 .build());
 
         scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
